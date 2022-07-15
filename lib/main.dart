@@ -28,7 +28,7 @@ void main() async{
   runApp(
     GetMaterialApp(
       title: "Oxyloan",
-      initialRoute: storage.read('isLoggedin')? AppPages.HOME:AppPages.INITIAL,
+      initialRoute: storage.read('isLoggedin')==true? AppPages.HOME:AppPages.INITIAL,
       getPages: AppPages.routes,
       debugShowCheckedModeBanner: false,
     ),
