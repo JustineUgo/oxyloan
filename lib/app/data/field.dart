@@ -28,7 +28,7 @@ class _FieldState extends State<Field> {
           fontSize: 14
         ),
         obscureText: widget.name=="password" || widget.name == "confirm password"? isLocked.value:!isLocked.value,
-        keyboardType: widget.name=="phone" || widget.name =="account no."?TextInputType.number:null,
+        keyboardType: widget.name=="phone" || widget.name =="account no."|| widget.name =="amount"?TextInputType.number:null,
         decoration: InputDecoration(
           hintText: widget.name,
           hintStyle: const TextStyle(

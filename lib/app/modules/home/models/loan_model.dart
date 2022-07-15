@@ -11,6 +11,7 @@ class Loan {
   final String duration;
   final String reason;
   final bool isPaid;
+  final String date_created;
   Loan({
     required this.id,
     required this.fullname,
@@ -22,6 +23,7 @@ class Loan {
     required this.duration,
     required this.reason,
     required this.isPaid,
+    required this.date_created,
   });
 
   Loan copyWith({
@@ -35,6 +37,7 @@ class Loan {
     String? duration,
     String? reason,
     bool? isPaid,
+    String? date_created,
   }) {
     return Loan(
       id: id ?? this.id,
@@ -47,6 +50,7 @@ class Loan {
       duration: duration ?? this.duration,
       reason: reason ?? this.reason,
       isPaid: isPaid ?? this.isPaid,
+      date_created: date_created ?? this.date_created,
     );
   }
 
@@ -62,6 +66,7 @@ class Loan {
       'duration': duration,
       'reason': reason,
       'isPaid': isPaid,
+      'date_created': date_created,
     };
   }
 
@@ -77,6 +82,7 @@ class Loan {
       duration: map['duration'] ?? '',
       reason: map['reason'] ?? '',
       isPaid: map['isPaid'] ?? false,
+      date_created: map['date_created'] ?? '',
     );
   }
 
@@ -86,7 +92,7 @@ class Loan {
 
   @override
   String toString() {
-    return 'Loan(id: $id, fullname: $fullname, address: $address, acctNumber: $acctNumber, bankName: $bankName, phoneNo: $phoneNo, amount: $amount, duration: $duration, reason: $reason, isPaid: $isPaid)';
+    return 'Loan(id: $id, fullname: $fullname, address: $address, acctNumber: $acctNumber, bankName: $bankName, phoneNo: $phoneNo, amount: $amount, duration: $duration, reason: $reason, isPaid: $isPaid, date_created: $date_created)';
   }
 
   @override
@@ -103,7 +109,8 @@ class Loan {
       other.amount == amount &&
       other.duration == duration &&
       other.reason == reason &&
-      other.isPaid == isPaid;
+      other.isPaid == isPaid &&
+      other.date_created == date_created;
   }
 
   @override
@@ -117,6 +124,7 @@ class Loan {
       amount.hashCode ^
       duration.hashCode ^
       reason.hashCode ^
-      isPaid.hashCode;
+      isPaid.hashCode ^
+      date_created.hashCode;
   }
 }

@@ -37,6 +37,12 @@ class HomeController extends GetxController {
 
   var loans = [].obs;
 
+  var activeLoans = 0.obs;
+  var totalLoans = 0.obs;
+  var totalPayed = 0.obs;
+  
+  var title = 'Transactions'.obs;
+
   @override
   void onInit() {
     initProfile();
@@ -86,6 +92,10 @@ class HomeController extends GetxController {
     isProcessing.value=true;
 
     String _id = firestore.collection(profile.id).doc().id;
+    String day = DateTime.now().day.toString();
+    String mth = DateTime.now().month.toString();
+    String yr = DateTime.now().year.toString().substring(2);
+    String date = day+'/'+mth+'/'+yr;
     Loan loan = Loan(
       id: _id, 
       fullname: name.text.trim(),
@@ -96,7 +106,8 @@ class HomeController extends GetxController {
       amount: amount.text.trim(), 
       reason: reason.text.trim(),
       duration: paybackDuration.text.trim(),
-      isPaid: false
+      isPaid: false,
+      date_created: date,
     );
 
     String? response = await homeProvider.loanApply(profile, loan);
@@ -126,7 +137,22 @@ class HomeController extends GetxController {
       _loans.docs.forEach((loanMap) {
         loans.add(Loan.fromMap(loanMap.data()));
       });
+      calcDetails(loans);
       isFetchingLoans.value=false;
+    });
+  }
+  
+
+  //calc data from loans
+  calcDetails(List loans){
+    totalLoans.value = 0;
+    activeLoans.value = 0;
+    totalPayed.value = 0;
+
+    loans.forEach((loan) { 
+      totalLoans.value+= int.parse(loan.amount);
+      loan.isPaid==true ? activeLoans.value += 0 : activeLoans.value += 1;
+      loan.isPaid==true ? totalPayed.value+=int.parse(loan.amount):  totalPayed.value+=0;
     });
   }
 
@@ -135,6 +161,19 @@ class HomeController extends GetxController {
     await Future.delayed(const Duration(seconds: 2));
     storage.write('isLoggedin', false);
     Get.offAll(()=>AuthenticationView(), binding: AuthenticationBinding());
+  }
+
+  payLoan(Loan loan)async{
+    AppController.showToast('Processing request');
+    Loan updatedLoan = loan.copyWith(isPaid: true);
+    String?  response = await homeProvider.payLoan(profile, updatedLoan);
+    if(response == 'success'){
+      AppController.showToast('Requested successful. Paid!');
+    }else{
+      AppController.showToast('Something went wrong. Check internet connection');
+    }
+    //delegate
+
   }
 
   clearControllers(){

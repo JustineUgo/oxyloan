@@ -5,12 +5,20 @@ import 'package:get/get.dart';
 import 'package:loan/app/modules/home/controllers/home_controller.dart';
 import 'package:loan/app/modules/home/views/widgets/loan_form.dart';
 import 'package:loan/app/util/color.dart';
+import 'package:intl/intl.dart';
 
-class DetailsCard extends StatelessWidget {
+class DetailsCard extends StatefulWidget {
   const DetailsCard({
     Key? key, required this.controller,
   }) : super(key: key);
   final HomeController controller;
+
+  @override
+  State<DetailsCard> createState() => _DetailsCardState();
+}
+
+class _DetailsCardState extends State<DetailsCard> {
+  NumberFormat moneyFormatter = NumberFormat.decimalPattern('en_us');
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +33,7 @@ class DetailsCard extends StatelessWidget {
               shape: MaterialStateProperty.all(const StadiumBorder())
             ),
             onPressed: ()=>Get.bottomSheet(
-              LoanForm(controller: controller, ),
+              LoanForm(controller: widget.controller, ),
               barrierColor: primary.withOpacity(.5),
               isScrollControlled: true,
             ), 
@@ -61,7 +69,7 @@ class DetailsCard extends StatelessWidget {
         
         // const SizedBox(height: 10,),
         Text(
-          controller.profile.firstname+' '+controller.profile.lastname,
+          widget.controller.profile.firstname+' '+widget.controller.profile.lastname,
           style: TextStyle(
             fontFamily: 'QKS',
             fontSize: 20,
@@ -83,26 +91,30 @@ class DetailsCard extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 30),
-        Text(
-          '124',
-          style: TextStyle(
-            fontFamily: 'QKS',
-            fontSize: 60,
-            color: white,
-            fontWeight: FontWeight.w500,
-            height: .5
+        Obx(()=>
+          Text(
+            widget.controller.loans.length.toString(),
+            style: TextStyle(
+              fontFamily: 'QKS',
+              fontSize: 60,
+              color: white,
+              fontWeight: FontWeight.w500,
+              height: .5
+            ),
           ),
         ),
         const SizedBox(height: 15),
-        Text(
-          'TOTAL ACTIVE LOAN: 3',
-          style: TextStyle(
-            fontFamily: 'QKS',
-            fontSize: 13,
-            color: white,
-            fontWeight: FontWeight.w700,
-            height: .1,
-            letterSpacing: 2
+        Obx(()=>
+          Text(
+            'TOTAL ACTIVE LOAN: ${widget.controller.activeLoans.value}',
+            style: TextStyle(
+              fontFamily: 'QKS',
+              fontSize: 13,
+              color: white,
+              fontWeight: FontWeight.w700,
+              height: .1,
+              letterSpacing: 2
+            ),
           ),
         ),
         const Spacer(),
@@ -120,15 +132,19 @@ class DetailsCard extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      '₦ 32,500',
-                      style: TextStyle(
-                        fontFamily: "QKS",
-                        color: white,
-                        fontSize: 18,
-                        letterSpacing: -1,
-                        fontWeight: FontWeight.w700
-                      ),
+                    Obx((){
+                      String figure = moneyFormatter.format(widget.controller.totalLoans.value);
+                        return Text(
+                          '₦'+figure,
+                          style: TextStyle(
+                            fontFamily: "QKS",
+                            color: white,
+                            fontSize: 18,
+                            letterSpacing: -1,
+                            fontWeight: FontWeight.w700
+                          ),
+                        );
+                      }
                     ),
                     Text(
                       'Total amount\n(Requested)',
@@ -155,15 +171,19 @@ class DetailsCard extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      '₦ 32,500',
-                      style: TextStyle(
-                        fontFamily: "QKS",
-                        color: white,
-                        fontSize: 18,
-                        letterSpacing: -1,
-                        fontWeight: FontWeight.w700
-                      ),
+                    Obx((){
+                      String figure = moneyFormatter.format(widget.controller.totalPayed.value);
+                      return Text(
+                        '₦'+figure,
+                        style: TextStyle(
+                          fontFamily: "QKS",
+                          color: white,
+                          fontSize: 18,
+                          letterSpacing: -1,
+                          fontWeight: FontWeight.w700
+                        ),
+                      );
+                      }
                     ),
                     Text(
                       'Total Repayed',

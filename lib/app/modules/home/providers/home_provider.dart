@@ -27,4 +27,15 @@ class HomeProvider extends GetConnect {
     }
   }
 
+  payLoan(Profile profile, Loan loan)async{
+    try{
+      CollectionReference userCollection = firestore.collection(profile.id);
+      //save id in users collection
+      await userCollection.doc(loan.id).update(loan.toMap());
+      return "success";
+    }catch(e){
+      return null;
+    }
+  }
+
 }

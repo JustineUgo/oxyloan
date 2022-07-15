@@ -46,54 +46,61 @@ class HomeView extends GetView<HomeController> {
           ),
         ],
       ),
-      body: CustomScrollView(
-        slivers: <Widget>[
-          SliverAppBar(
-            pinned: true,
-            backgroundColor: primary,
-            expandedHeight: 350.0,
-            flexibleSpace: FlexibleSpaceBar(
-              title: Text(
-                'Transactions',
-                style: TextStyle(
-                  // color: black,
-                  fontSize: 18,
-                  fontWeight: FontWeight.w700,
-                  fontFamily: "QKS"
+      body: Stack(
+        children: [
+          Obx(()=>
+            CustomScrollView(
+              slivers: <Widget>[
+                SliverAppBar(
+                  pinned: true,
+                  backgroundColor: primary,
+                  expandedHeight: 350.0,
+                  flexibleSpace: FlexibleSpaceBar(
+                    title: Text(
+                      controller.title.value,
+                      style: TextStyle(
+                        // color: black,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w700,
+                        fontFamily: "QKS"
+                      ),
+                     ),
+                    titlePadding: const EdgeInsets.symmetric(horizontal: 20),
+                    background: Header(controller: controller, ),
+                  ),
                 ),
-               ),
-              titlePadding: const EdgeInsets.symmetric(horizontal: 10),
-              background: Header(controller: controller, ),
+                
+                SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                    (_, int index) {
+                      return LoanTransaction(loan: controller.loans[controller.loans.length-1-index], controller: controller,);
+                      
+                    },
+                    childCount: controller.loans.length,
+                  ),
+                ),
+              ],
             ),
           ),
-          
-          SliverList(
-            delegate: SliverChildBuilderDelegate(
-              (_, int index) {
-                return Container(
-                  height: Get.height-345,
-                  child: Center(
-                    child: Obx(()=>controller.loans.isEmpty?
-                        Obx(()=>
-                          Text(
-                            controller.isFetchingLoans.value? "Getting record...":"You haven't requested for loan",
-                            style: const TextStyle(
-                              fontFamily: 'QKS',
-                              fontSize: 16
-                            ),
-                          ),
-                        ):
-                        ListView.builder(
-                          itemCount: controller.loans.length,
-                          itemBuilder: (context, index) => LoanTransaction(loan: controller.loans[index])
-                        ),
+          Positioned(
+            bottom: 0,
+            child: Obx(()=>controller.loans.isEmpty?
+              Container(
+              height: Get.height-345,
+              child: Center(
+                child: Obx(()=>
+                    Text(
+                      controller.isFetchingLoans.value? "Getting record...":"You haven't requested for loan",
+                      style: const TextStyle(
+                        fontFamily: 'QKS',
+                        fontSize: 16
                       ),
                     ),
-                  );
-              },
-              childCount: 1,
+                  )
+                ),
+              ):const SizedBox.shrink(),
             ),
-          ),
+          )
         ],
       ),
     );

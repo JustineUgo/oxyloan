@@ -8,7 +8,6 @@ environment:
 dependencies:
   cloud_firestore: ^3.3.0
   cupertino_icons: ^1.0.2
-  # expendable_fab: ^0.0.3
   firebase_auth: ^3.4.2
   firebase_core: ^1.19.2
   flutter:
@@ -17,6 +16,7 @@ dependencies:
   fluttertoast: ^8.0.9
   get: 4.6.5
   get_storage: ^2.0.3
+  intl: ^0.17.0
   liquid_swipe: ^3.0.0
 
 dev_dependencies:
