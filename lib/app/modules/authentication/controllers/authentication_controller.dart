@@ -169,6 +169,7 @@ class AuthenticationController extends GetxController {
       
       //on success save info and move to dashboard
       storage.write('isLoggedin', true);
+      storage.write('isLight', true);
       isProcessing.value = false;
       AppController.showToast('Sigin successful');
       Get.offAll(()=>HomeView(), binding: HomeBinding());

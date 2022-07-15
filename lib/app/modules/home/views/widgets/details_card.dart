@@ -25,35 +25,56 @@ class _DetailsCardState extends State<DetailsCard> {
     return Column(
       children: [
         const SizedBox(height: 40,),
-        SizedBox(
-          width: Get.width/2,
-          child: ElevatedButton(
-            style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all(primary),
-              shape: MaterialStateProperty.all(const StadiumBorder())
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Icon(CupertinoIcons.sun_min, color: black.withOpacity(0),), 
             ),
-            onPressed: ()=>Get.bottomSheet(
-              LoanForm(controller: widget.controller, ),
-              barrierColor: primary.withOpacity(.5),
-              isScrollControlled: true,
-            ), 
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(CupertinoIcons.add),
-                const SizedBox(width: 5,),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 15.0),
-                  child: Text(
-                    'Request Loan',
-                    style: TextStyle(
-                      fontFamily: 'QKS'
+            SizedBox(
+              width: Get.width/2,
+              child: ElevatedButton(
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(primary),
+                  shape: MaterialStateProperty.all(const StadiumBorder())
+                ),
+                onPressed: ()=>Get.bottomSheet(
+                  LoanForm(controller: widget.controller, ),
+                  barrierColor: primary.withOpacity(.5),
+                  isScrollControlled: true,
+                ), 
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(CupertinoIcons.add),
+                    const SizedBox(width: 5,),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 15.0),
+                      child: Text(
+                        'Request Loan',
+                        style: TextStyle(
+                          fontFamily: 'QKS'
+                        ),
+                      ),
                     ),
+                  ],
+                )
+              ),
+            ),
+            GestureDetector(
+              onTap: ()=>widget.controller.changeTheme(),
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Obx(()=>
+                  Icon(
+                    CupertinoIcons.sun_min_fill, 
+                    color: widget.controller.isLight.value?white:null,
                   ),
                 ),
-              ],
-            )
-          ),
+              ),
+            ),
+          ],
         ),
         const SizedBox(height: 20),
         // Text(

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:get/get.dart';
+import 'package:loan/app/data/background.dart';
 import 'package:loan/app/data/expandable_fab.dart';
 import 'package:loan/app/modules/home/views/widgets/header.dart';
 import 'package:loan/app/modules/home/views/widgets/loan_form.dart';
@@ -48,6 +49,13 @@ class HomeView extends GetView<HomeController> {
       ),
       body: Stack(
         children: [
+          Background(
+            child: Obx(()=>
+              Container(
+                color: controller.isLight.value?null:Color(0xff1B2430),
+              ),
+            ),
+          ),
           Obx(()=>
             CustomScrollView(
               slivers: <Widget>[
@@ -87,6 +95,7 @@ class HomeView extends GetView<HomeController> {
             child: Obx(()=>controller.loans.isEmpty?
               Container(
               height: Get.height-345,
+              width: Get.width,
               child: Center(
                 child: Obx(()=>
                     Text(

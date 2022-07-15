@@ -43,6 +43,8 @@ class HomeController extends GetxController {
   
   var title = 'Transactions'.obs;
 
+  var isLight = true.obs;
+
   @override
   void onInit() {
     initProfile();
@@ -62,6 +64,8 @@ class HomeController extends GetxController {
 
   void initProfile(){
     profile = Profile.fromMap( storage.read('profile'));
+
+    isLight.value = storage.read('isLight');
   }
 
   verifyInput(){
@@ -108,6 +112,7 @@ class HomeController extends GetxController {
       duration: paybackDuration.text.trim(),
       isPaid: false,
       date_created: date,
+      index: DateTime.now().millisecondsSinceEpoch
     );
 
     String? response = await homeProvider.loanApply(profile, loan);
@@ -137,6 +142,10 @@ class HomeController extends GetxController {
       _loans.docs.forEach((loanMap) {
         loans.add(Loan.fromMap(loanMap.data()));
       });
+
+      //order loans
+      loans.sort((a, b)=>a.index.compareTo(b.index));
+
       calcDetails(loans);
       isFetchingLoans.value=false;
     });
@@ -172,8 +181,11 @@ class HomeController extends GetxController {
     }else{
       AppController.showToast('Something went wrong. Check internet connection');
     }
-    //delegate
+  }
 
+  changeTheme(){
+    isLight.value = !isLight.value;
+    storage.write('isLight', isLight.value);
   }
 
   clearControllers(){
