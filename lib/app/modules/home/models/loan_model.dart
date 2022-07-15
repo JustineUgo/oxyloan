@@ -5,7 +5,7 @@ class Loan {
   final String fullname;
   final String address;
   final String acctNumber;
-  final String backName;
+  final String bankName;
   final String phoneNo;
   final String amount;
   final String duration;
@@ -14,7 +14,7 @@ class Loan {
     required this.fullname,
     required this.address,
     required this.acctNumber,
-    required this.backName,
+    required this.bankName,
     required this.phoneNo,
     required this.amount,
     required this.duration,
@@ -35,7 +35,7 @@ class Loan {
       fullname: fullname ?? this.fullname,
       address: address ?? this.address,
       acctNumber: acctNumber ?? this.acctNumber,
-      backName: backName ?? this.backName,
+      bankName: backName ?? this.bankName,
       phoneNo: phoneNo ?? this.phoneNo,
       amount: amount ?? this.amount,
       duration: duration ?? this.duration,
@@ -48,7 +48,7 @@ class Loan {
       'fullname': fullname,
       'address': address,
       'acctNumber': acctNumber,
-      'backName': backName,
+      'backName': bankName,
       'phoneNo': phoneNo,
       'amount': amount,
       'duration': duration,
@@ -61,7 +61,7 @@ class Loan {
       fullname: map['fullname'] ?? '',
       address: map['address'] ?? '',
       acctNumber: map['acctNumber'] ?? '',
-      backName: map['backName'] ?? '',
+      bankName: map['backName'] ?? '',
       phoneNo: map['phoneNo'] ?? '',
       amount: map['amount'] ?? '',
       duration: map['duration'] ?? '',
@@ -74,7 +74,7 @@ class Loan {
 
   @override
   String toString() {
-    return 'Loan(id: $id, fullname: $fullname, address: $address, acctNumber: $acctNumber, backName: $backName, phoneNo: $phoneNo, amount: $amount, duration: $duration)';
+    return 'Loan(id: $id, fullname: $fullname, address: $address, acctNumber: $acctNumber, backName: $bankName, phoneNo: $phoneNo, amount: $amount, duration: $duration)';
   }
 
   @override
@@ -86,7 +86,7 @@ class Loan {
       other.fullname == fullname &&
       other.address == address &&
       other.acctNumber == acctNumber &&
-      other.backName == backName &&
+      other.bankName == bankName &&
       other.phoneNo == phoneNo &&
       other.amount == amount &&
       other.duration == duration;
@@ -98,7 +98,7 @@ class Loan {
       fullname.hashCode ^
       address.hashCode ^
       acctNumber.hashCode ^
-      backName.hashCode ^
+      bankName.hashCode ^
       phoneNo.hashCode ^
       amount.hashCode ^
       duration.hashCode;
