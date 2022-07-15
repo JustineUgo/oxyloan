@@ -69,7 +69,7 @@ class _DetailsCardState extends State<DetailsCard> {
                 child: Obx(()=>
                   Icon(
                     CupertinoIcons.sun_min_fill, 
-                    color: widget.controller.isLight.value?white:null,
+                    color: widget.controller.isLight.value?null:white,
                   ),
                 ),
               ),
