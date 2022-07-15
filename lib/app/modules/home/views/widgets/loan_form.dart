@@ -26,6 +26,9 @@ class _LoanFormState extends State<LoanForm> {
 
   @override
   Widget build(BuildContext context) {
+    widget.controller.name.text = widget.controller.profile.firstname + ' '+ widget.controller.profile.lastname;
+    widget.controller.phone.text = widget.controller.profile.phone;
+    widget.controller.paybackDuration.text = '1';
     return Container(
       height: Get.height/1.2,
       decoration: BoxDecoration(
@@ -55,7 +58,7 @@ class _LoanFormState extends State<LoanForm> {
             const SizedBox(height: 10,),
             Field(icon: CupertinoIcons.phone, name: 'phone', textEditingController: widget.controller.phone,),
             const SizedBox(height: 10,),
-            Field(icon: CupertinoIcons.home, name: 'home address', textEditingController: widget.controller.phone,),
+            Field(icon: CupertinoIcons.home, name: 'home address', textEditingController: widget.controller.address,),
             const SizedBox(height: 10,),
             Row(
               children: [
@@ -139,6 +142,7 @@ class _LoanFormState extends State<LoanForm> {
                   onSelectedItemChanged: (value){
                     String _value = (value+1).toString();
                     duration.value=_value+" month(s)";
+                    widget.controller.paybackDuration.text = _value;
                   },
                   children: [
                     DurationChip(text: 'a month',),
@@ -160,23 +164,24 @@ class _LoanFormState extends State<LoanForm> {
             const SizedBox(height: 20,),
             Container(
               width: Get.width,
-              child: ElevatedButton(
-                style: ButtonStyle(
-                  shape: MaterialStateProperty.all(const StadiumBorder()),
-                  backgroundColor: MaterialStateProperty.all(black)
-                ),
-                onPressed: (){
-                  Get.back();
-                  Get.bottomSheet(
-                    ApproveForm(),
-                    barrierColor: primary.withOpacity(.5),
-                    isScrollControlled: true,
-                  );
-                }, 
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 22),
-                  child: Text(
-                    'Apply'
+              child: Obx(()=>
+                ElevatedButton(
+                  style: ButtonStyle(
+                    shape: MaterialStateProperty.all(const StadiumBorder()),
+                    backgroundColor: widget.controller.isProcessing.value?
+                      MaterialStateProperty.all(black.withOpacity(.5)):MaterialStateProperty.all(black)
+                  ),
+                  onPressed: widget.controller.isProcessing.value?null:
+                  (){
+                    widget.controller.verifyInput();
+                  }, 
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 22),
+                    child: Obx(()=>
+                      Text(
+                        widget.controller.isProcessing.value?'Processing request...': 'Apply'
+                      ),
+                    ),
                   ),
                 ),
               ),

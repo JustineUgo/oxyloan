@@ -28,7 +28,7 @@ class _ApproveFormState extends State<ApproveForm> {
           Row(
             children: [
               Text(
-                'Loan\nApplication',
+                'Congratulations',
                 style: const TextStyle(
                   fontSize: 26,
                   fontWeight: FontWeight.w600,
