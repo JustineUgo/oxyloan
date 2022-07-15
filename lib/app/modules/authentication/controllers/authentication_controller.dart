@@ -5,6 +5,9 @@ import 'package:get_storage/get_storage.dart';
 import 'package:loan/app/data/controller.dart';
 import 'package:loan/app/modules/authentication/models/profile.dart';
 import 'package:loan/app/modules/authentication/providers/authentication_provider.dart';
+import 'package:loan/app/modules/authentication/views/widgets/signin_form.dart';
+import 'package:loan/app/modules/home/bindings/home_binding.dart';
+import 'package:loan/app/modules/home/views/home_view.dart';
 import 'package:loan/app/util/collection.dart';
 import 'package:loan/app/util/color.dart';
 
@@ -62,6 +65,13 @@ class AuthenticationController extends GetxController {
         siginup();
       }
     }else{
+      if(email.text.isEmpty){
+        AppController.showToast('Enter your email');
+      }else if(password.text.isEmpty){
+        AppController.showToast('Enter your password');
+      }else{
+        signin();
+      }
     }
   }
 
@@ -113,6 +123,66 @@ class AuthenticationController extends GetxController {
     }
     isProcessing.value=false;
   }
+
+
+  void signin() async {
+    print("Signing in");
+
+    isProcessing.value = true;
+
+    var response = await authenticationProvider.signinUser(
+      email.text.trim(), password.text.trim()
+    );
+
+    //check response
+    switch (response.toString()) {
+      case "null":
+        AppController.showToast('Something went wrong, check your internet and try again.');
+        isProcessing.value = false;
+        break;
+      case 'No user found for that email.':
+        AppController.showToast("This email does not exist. Please sign up if you haven't already.");
+        isProcessing.value = false;
+        clearControllers();
+        break;
+      case 'Wrong password provided for that user.':
+        AppController.showToast("Your password is wrong. Please check it and try again.");
+        isProcessing.value = false;
+        password.clear();
+        break;
+      default:
+        {
+          //Success
+          AppController.showToast('Retrieving information');
+
+          saveUserInfo(response!);
+      }
+      break;
+    }
+  }
+
+  void saveUserInfo(String uid) async {
+    try {
+      var response = await authenticationProvider.retrieveUser(uid);
+      Profile profile = Profile.fromMap(response);
+      await storage.write('profile', profile.toMap());
+      
+      //on success save info and move to dashboard
+      storage.write('isLoggedin', true);
+      isProcessing.value = false;
+      AppController.showToast('Sigin successful');
+      Get.offAll(()=>HomeView(), binding: HomeBinding());
+      clearControllers();
+
+    } catch (e) {
+      
+      clearControllers();
+      isProcessing.value = false;
+
+      AppController.showToast('Something went wrong. Check internet connection');
+    }
+  }
+
 
   clearControllers(){
     firstname.clear();

@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:loan/app/modules/authentication/models/profile.dart';
+import 'package:loan/app/util/collection.dart';
 
 class AuthenticationProvider extends GetConnect {
 
@@ -70,8 +71,8 @@ class AuthenticationProvider extends GetConnect {
   }
 
 
-  Future retrieveUser(String uid, String collection) async{
-    CollectionReference users = firestore.collection(collection);
+  Future retrieveUser(String uid, ) async{
+    CollectionReference users = firestore.collection(user);
 
     try{
       DocumentSnapshot userSnapshot = await users.doc(uid).get();
