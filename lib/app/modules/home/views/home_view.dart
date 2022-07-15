@@ -1,16 +1,15 @@
 
+// import 'package:expendable_fab/expendable_fab.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:get/get.dart';
-import 'package:loan/app/data/field.dart';
-import 'package:loan/app/modules/home/views/widgets/details_card.dart';
+import 'package:loan/app/data/expandable_fab.dart';
 import 'package:loan/app/modules/home/views/widgets/header.dart';
 import 'package:loan/app/modules/home/views/widgets/loan_form.dart';
 import 'package:loan/app/modules/home/views/widgets/transaction.dart';
 import 'package:loan/app/util/color.dart';
-import 'package:loan/app/util/image.dart';
 
 import '../controllers/home_controller.dart';
 
@@ -28,17 +27,36 @@ class HomeView extends GetView<HomeController> {
     ));
 
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: (){
-          Get.bottomSheet(
-            LoanForm(controller: controller, ),
-            barrierColor: primary.withOpacity(.5),
-            isScrollControlled: true,
-          );
-        },
-        backgroundColor: primary,
-        child: Icon(CupertinoIcons.add),
+      floatingActionButton: ExpendableFabb(
+        distance: 50.0,
+        children: [
+          ActionButton(
+            onPressed: () => controller.logout(),
+            icon: const Icon(CupertinoIcons.square_arrow_left),
+          ),
+          ActionButton(
+            onPressed: (){
+              Get.bottomSheet(
+                LoanForm(controller: controller, ),
+                barrierColor: primary.withOpacity(.5),
+                isScrollControlled: true,
+              );
+            },
+            icon: const  Icon(CupertinoIcons.add),
+          ),
+        ],
       ),
+      // FloatingActionButton(
+      //   onPressed: (){
+      //     Get.bottomSheet(
+      //       LoanForm(controller: controller, ),
+      //       barrierColor: primary.withOpacity(.5),
+      //       isScrollControlled: true,
+      //     );
+      //   },
+      //   backgroundColor: primary,
+      //   child: Icon(CupertinoIcons.add),
+      // ),
       body: CustomScrollView(
         slivers: <Widget>[
           SliverAppBar(
@@ -56,10 +74,10 @@ class HomeView extends GetView<HomeController> {
                 ),
                ),
               titlePadding: const EdgeInsets.symmetric(horizontal: 10),
-              background: Header(controller: controller),
+              background: Header(controller: controller, ),
             ),
           ),
-          //3
+          
           SliverList(
             delegate: SliverChildBuilderDelegate(
               (_, int index) {

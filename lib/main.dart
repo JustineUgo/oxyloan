@@ -11,6 +11,8 @@ void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   await GetStorage.init();
+
+  var storage = GetStorage();
   // GetStorage().erase();
 
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
@@ -26,7 +28,7 @@ void main() async{
   runApp(
     GetMaterialApp(
       title: "Oxyloan",
-      initialRoute: AppPages.INITIAL,
+      initialRoute: storage.read('isLoggedin')? AppPages.HOME:AppPages.INITIAL,
       getPages: AppPages.routes,
       debugShowCheckedModeBanner: false,
     ),

@@ -61,7 +61,7 @@ class DetailsCard extends StatelessWidget {
         
         // const SizedBox(height: 10,),
         Text(
-          'Ogaraku Justine',
+          controller.profile.firstname+' '+controller.profile.lastname,
           style: TextStyle(
             fontFamily: 'QKS',
             fontSize: 20,

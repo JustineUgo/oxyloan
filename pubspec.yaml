@@ -8,6 +8,7 @@ environment:
 dependencies:
   cloud_firestore: ^3.3.0
   cupertino_icons: ^1.0.2
+  # expendable_fab: ^0.0.3
   firebase_auth: ^3.4.2
   firebase_core: ^1.19.2
   flutter:
