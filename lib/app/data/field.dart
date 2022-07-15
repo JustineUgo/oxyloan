@@ -19,28 +19,35 @@ class _FieldState extends State<Field> {
   var isLocked = true.obs;
   @override
   Widget build(BuildContext context) {
-    return TextField(
-      controller: widget.textEditingController,
-      style: const TextStyle(
-        fontFamily: 'QKS',
-        fontSize: 14
-      ),
-      keyboardType: widget.name=="phone" || widget.name =="account no."?TextInputType.number:null,
-      decoration: InputDecoration(
-        hintText: widget.name,
-        hintStyle: const TextStyle(
+    return Obx(()=>
+      TextField(
+        textCapitalization: TextCapitalization.sentences,
+        controller: widget.textEditingController,
+        style: const TextStyle(
           fontFamily: 'QKS',
           fontSize: 14
         ),
-        prefixIcon: GestureDetector(
-          onTap: ()=>isLocked.value = !isLocked.value,
-          child: widget.name=="password" || widget.name == "confirm password"? Obx(()=>
+        obscureText: widget.name=="password" || widget.name == "confirm password"? isLocked.value:!isLocked.value,
+        keyboardType: widget.name=="phone" || widget.name =="account no."?TextInputType.number:null,
+        decoration: InputDecoration(
+          hintText: widget.name,
+          hintStyle: const TextStyle(
+            fontFamily: 'QKS',
+            fontSize: 14
+          ),
+          prefixIcon: GestureDetector(
+            onTap: ()=>isLocked.value = !isLocked.value,
+            child: widget.name=="password" || widget.name == "confirm password"? Obx(()=>
+              Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Icon(
+                  isLocked.value?CupertinoIcons.lock_open: widget.icon ,size: 16,
+                ),
+              )
+            ):
             Icon(
-              isLocked.value?CupertinoIcons.lock_open: widget.icon ,size: 16,
-            )
-          ):
-          Icon(
-            widget.icon ,size: 16,
+              widget.icon ,size: 16,
+            ),
           ),
         ),
       ),

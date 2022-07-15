@@ -46,16 +46,21 @@ class _SigninState extends State<Signin> {
         
         Container(
           width: Get.width,
-          child: ElevatedButton(
-            style: ButtonStyle(
-              shape: MaterialStateProperty.all(const StadiumBorder()),
-              backgroundColor: MaterialStateProperty.all(black)
-            ),
-            onPressed: (){}, 
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 22),
-              child: Text(
-                'Sign in'
+          child: Obx(()=>
+            ElevatedButton(
+              style: ButtonStyle(
+                shape: MaterialStateProperty.all(const StadiumBorder()),
+                backgroundColor: widget.controller.isProcessing.value?MaterialStateProperty.all(black.withOpacity(.5)):MaterialStateProperty.all(black),
+              ),
+              onPressed: widget.controller.isProcessing.value?null:
+                 ()=>widget.controller.verifyInputs(widget.controller.isReg.value),  
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 22),
+                child: Obx(()=>
+                  Text(
+                    widget.controller.isProcessing.value?'Processing...':'Sign in'
+                  ),
+                ),
               ),
             ),
           ),
