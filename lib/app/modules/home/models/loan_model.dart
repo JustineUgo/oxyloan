@@ -9,6 +9,8 @@ class Loan {
   final String phoneNo;
   final String amount;
   final String duration;
+  final String reason;
+  final bool isPaid;
   Loan({
     required this.id,
     required this.fullname,
@@ -18,6 +20,8 @@ class Loan {
     required this.phoneNo,
     required this.amount,
     required this.duration,
+    required this.reason,
+    required this.isPaid,
   });
 
   Loan copyWith({
@@ -25,20 +29,24 @@ class Loan {
     String? fullname,
     String? address,
     String? acctNumber,
-    String? backName,
+    String? bankName,
     String? phoneNo,
     String? amount,
     String? duration,
+    String? reason,
+    bool? isPaid,
   }) {
     return Loan(
       id: id ?? this.id,
       fullname: fullname ?? this.fullname,
       address: address ?? this.address,
       acctNumber: acctNumber ?? this.acctNumber,
-      bankName: backName ?? this.bankName,
+      bankName: bankName ?? this.bankName,
       phoneNo: phoneNo ?? this.phoneNo,
       amount: amount ?? this.amount,
       duration: duration ?? this.duration,
+      reason: reason ?? this.reason,
+      isPaid: isPaid ?? this.isPaid,
     );
   }
 
@@ -48,10 +56,12 @@ class Loan {
       'fullname': fullname,
       'address': address,
       'acctNumber': acctNumber,
-      'backName': bankName,
+      'bankName': bankName,
       'phoneNo': phoneNo,
       'amount': amount,
       'duration': duration,
+      'reason': reason,
+      'isPaid': isPaid,
     };
   }
 
@@ -61,10 +71,12 @@ class Loan {
       fullname: map['fullname'] ?? '',
       address: map['address'] ?? '',
       acctNumber: map['acctNumber'] ?? '',
-      bankName: map['backName'] ?? '',
+      bankName: map['bankName'] ?? '',
       phoneNo: map['phoneNo'] ?? '',
       amount: map['amount'] ?? '',
       duration: map['duration'] ?? '',
+      reason: map['reason'] ?? '',
+      isPaid: map['isPaid'] ?? false,
     );
   }
 
@@ -74,7 +86,7 @@ class Loan {
 
   @override
   String toString() {
-    return 'Loan(id: $id, fullname: $fullname, address: $address, acctNumber: $acctNumber, backName: $bankName, phoneNo: $phoneNo, amount: $amount, duration: $duration)';
+    return 'Loan(id: $id, fullname: $fullname, address: $address, acctNumber: $acctNumber, bankName: $bankName, phoneNo: $phoneNo, amount: $amount, duration: $duration, reason: $reason, isPaid: $isPaid)';
   }
 
   @override
@@ -89,7 +101,9 @@ class Loan {
       other.bankName == bankName &&
       other.phoneNo == phoneNo &&
       other.amount == amount &&
-      other.duration == duration;
+      other.duration == duration &&
+      other.reason == reason &&
+      other.isPaid == isPaid;
   }
 
   @override
@@ -101,6 +115,8 @@ class Loan {
       bankName.hashCode ^
       phoneNo.hashCode ^
       amount.hashCode ^
-      duration.hashCode;
+      duration.hashCode ^
+      reason.hashCode ^
+      isPaid.hashCode;
   }
 }

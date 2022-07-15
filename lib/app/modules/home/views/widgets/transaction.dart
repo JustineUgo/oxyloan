@@ -1,18 +1,20 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:loan/app/modules/home/models/loan_model.dart';
 import 'package:loan/app/util/color.dart';
 
-class Transaction extends StatefulWidget {
-  const Transaction({
-    Key? key,
+class LoanTransaction extends StatefulWidget {
+  const LoanTransaction({
+    Key? key, required this.loan,
   }) : super(key: key);
+  final Loan loan;
 
   @override
-  State<Transaction> createState() => _TransactionState();
+  State<LoanTransaction> createState() => _LoanTransactionState();
 }
 
-class _TransactionState extends State<Transaction> {
+class _LoanTransactionState extends State<LoanTransaction> {
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -26,7 +28,7 @@ class _TransactionState extends State<Transaction> {
               child: Icon(CupertinoIcons.briefcase_fill, color: primary,),
             ),
             title: Text(
-              'Gift',
+              widget.loan.reason,
               style: TextStyle(
                 letterSpacing: 3,
                 fontFamily: "QKS",
@@ -35,7 +37,7 @@ class _TransactionState extends State<Transaction> {
               ),
             ),
             subtitle: Text(
-              '01/12/20 . Due: a month',
+              '01/12/20 . Due: ${widget.loan.duration} month',
               style: TextStyle(
                 fontFamily: "QKS",
                 fontSize: 12,
@@ -46,7 +48,7 @@ class _TransactionState extends State<Transaction> {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Text(
-                  '₦ 3,500',
+                  widget.loan.amount,
                   style: TextStyle(
                     fontFamily: "QKS",
                     fontSize: 16,
@@ -54,12 +56,12 @@ class _TransactionState extends State<Transaction> {
                   ),
                 ),
                 Text(
-                  'Pay',
+                  widget.loan.isPaid? 'Paid':'Pay',
                   style: TextStyle(
                     fontFamily: "QKS",
                     fontSize: 14,
                     fontWeight: FontWeight.w700,
-                    color: Colors.green,
+                    color: widget.loan.isPaid? Colors.grey: Colors.green,
                   ),
                 ),
               ],

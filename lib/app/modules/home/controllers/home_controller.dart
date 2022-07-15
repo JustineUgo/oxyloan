@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
@@ -9,6 +11,7 @@ import 'package:loan/app/modules/authentication/views/authentication_view.dart';
 import 'package:loan/app/modules/home/models/loan_model.dart';
 import 'package:loan/app/modules/home/providers/home_provider.dart';
 import 'package:loan/app/modules/home/views/widgets/approve_form.dart';
+import 'package:loan/app/modules/home/views/widgets/transaction.dart';
 import 'package:loan/app/util/color.dart';
 
 class HomeController extends GetxController {
@@ -27,11 +30,17 @@ class HomeController extends GetxController {
   TextEditingController reason = TextEditingController();
   TextEditingController paybackDuration = TextEditingController();
 
+  late StreamSubscription<QuerySnapshot<Map<String, dynamic>>> transactions;
+
   var isProcessing = false.obs;
+  var isFetchingLoans = true.obs;
+
+  var loans = [].obs;
 
   @override
   void onInit() {
     initProfile();
+    getTransactions();
     super.onInit();
   }
 
@@ -85,7 +94,9 @@ class HomeController extends GetxController {
       bankName: bankName.text.trim(), 
       phoneNo: phone.text.trim(), 
       amount: amount.text.trim(), 
-      duration: paybackDuration.text.trim()
+      reason: reason.text.trim(),
+      duration: paybackDuration.text.trim(),
+      isPaid: false
     );
 
     String? response = await homeProvider.loanApply(profile, loan);
@@ -103,6 +114,20 @@ class HomeController extends GetxController {
       );
     }
     isProcessing.value=false;
+  }
+
+  getTransactions()async{
+    transactions =
+    firestore.collection(profile.id).snapshots().listen((event)=>event);
+    
+    transactions.onData((_loans) { 
+      loans.clear();
+      isFetchingLoans.value = true;
+      _loans.docs.forEach((loanMap) {
+        loans.add(Loan.fromMap(loanMap.data()));
+      });
+      isFetchingLoans.value=false;
+    });
   }
 
   void logout()async{

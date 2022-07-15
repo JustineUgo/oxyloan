@@ -46,17 +46,6 @@ class HomeView extends GetView<HomeController> {
           ),
         ],
       ),
-      // FloatingActionButton(
-      //   onPressed: (){
-      //     Get.bottomSheet(
-      //       LoanForm(controller: controller, ),
-      //       barrierColor: primary.withOpacity(.5),
-      //       isScrollControlled: true,
-      //     );
-      //   },
-      //   backgroundColor: primary,
-      //   child: Icon(CupertinoIcons.add),
-      // ),
       body: CustomScrollView(
         slivers: <Widget>[
           SliverAppBar(
@@ -81,9 +70,28 @@ class HomeView extends GetView<HomeController> {
           SliverList(
             delegate: SliverChildBuilderDelegate(
               (_, int index) {
-                return Transaction();
+                return Container(
+                  height: Get.height-345,
+                  child: Center(
+                    child: Obx(()=>controller.loans.isEmpty?
+                        Obx(()=>
+                          Text(
+                            controller.isFetchingLoans.value? "Getting record...":"You haven't requested for loan",
+                            style: const TextStyle(
+                              fontFamily: 'QKS',
+                              fontSize: 16
+                            ),
+                          ),
+                        ):
+                        ListView.builder(
+                          itemCount: controller.loans.length,
+                          itemBuilder: (context, index) => LoanTransaction(loan: controller.loans[index])
+                        ),
+                      ),
+                    ),
+                  );
               },
-              childCount: 20,
+              childCount: 1,
             ),
           ),
         ],
